@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
             envelope.classList.remove('open');
             isLetterOpen = true; 
             
-            // Ẩn thư bằng cách thay đổi class và style (CSS)
+            // Ẩn thư
             letter.style.opacity = 0;
             letter.style.transform = 'translateY(150%) scale(0.5)';
 
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Mở thư
             envelope.classList.add('open');
             
-            // Hiển thị thư
+            // Hiện thư
             letter.style.opacity = 1;
             letter.style.transform = 'translateY(-100px) scale(1)';
             
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // --- BƯỚC 3: Mở Messenger ---
     notificationBar.addEventListener('click', function() {
-        // Nhắc nhở người dùng (theo yêu cầu)
+        // Nhắc nhở người dùng
         alert('Có tin nhắn mới từ A1-K62! Mở Messenger.');
         
         // Mở cửa sổ Messenger và ẩn thông báo
@@ -88,6 +88,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Nút Quay lại Messenger ---
     backBtn.addEventListener('click', function() {
         messengerWindow.classList.remove('open');
-        // Có thể tắt màn hình iPhone nếu muốn: screen.classList.remove('active');
     });
 });
