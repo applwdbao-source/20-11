@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thư Tình Tương Tác (Final)</title>
+    <title>Thư Tình Tương Tác Không Lỗi</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* --- CÀI ĐẶT CƠ BẢN --- */
@@ -19,7 +19,7 @@
         .letter{position:absolute;width:80%;max-width:400px;background-color:#fff;padding:20px;box-shadow:0 4px 15px rgba(0,0,0,.2);transform:translateY(150%) scale(.5);opacity:0;transition:all .7s ease-in-out;z-index:8;font-family:'Dancing Script',cursive;line-height:1.5;color:#333;text-align:center}
         .letter .content{font-size:18px}.letter .signature-name{font-size:20px;margin-top:10px;font-weight:700}
         .envelope.open .flap{transform:rotateX(180deg)}
-        .envelope.open + .letter{transform:translateY(-100px) scale(1);opacity:1;} /* Vị trí lá thư khi mở */
+        .envelope.open + .letter{transform:translateY(-100px) scale(1);opacity:1;}
         /* --- HIỆU ỨNG TRÁI TIM BAY --- */
         .floating-hearts{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none}
         .floating-hearts span{position:absolute;color:#f095b3;font-size:35px;opacity:.5;animation:floatUp 15s infinite ease-in}
@@ -126,44 +126,63 @@
             const closeVideoBtn = document.getElementById('closeVideoBtn');
             const backBtn = document.querySelector('.back-btn');
 
+            // Khởi tạo trạng thái ban đầu của thư (ẩn iPhone)
+            function resetToEnvelope() {
+                envelope.classList.remove('open');
+                letter.style.opacity = 0;
+                letter.style.transform = 'translateY(150%) scale(0.5)';
+                iphoneContainer.classList.remove('visible');
+                screen.classList.remove('active');
+                notificationBar.classList.remove('show');
+                messengerWindow.classList.remove('open');
+                videoPlayer.classList.remove('playing');
+                myVideo.pause();
+                myVideo.currentTime = 0;
+            }
+
             // --- BƯỚC 1: Mở/Đóng Thư ---
             envelope.addEventListener('click', function() {
-                if (envelope.classList.contains('open')) {
-                    // Đóng thư & Hiện iPhone
-                    envelope.classList.remove('open');
-                    letter.style.opacity = 0;
-                    letter.style.transform = 'translateY(150%) scale(0.5)';
-                    setTimeout(showIphone, 700); 
-                } else {
-                    // Mở thư
+                if (!envelope.classList.contains('open')) {
+                    // Mở thư (Lần click 1)
                     envelope.classList.add('open');
                     letter.style.opacity = 1;
                     letter.style.transform = 'translateY(-100px) scale(1)';
-                    // Đảm bảo iPhone ẩn khi đọc thư
+                    // Ẩn iPhone ngay lập tức nếu nó đang hiển thị (đề phòng)
                     iphoneContainer.classList.remove('visible');
-                    screen.classList.remove('active');
-                    notificationBar.classList.remove('show');
-                    messengerWindow.classList.remove('open');
-                    videoPlayer.classList.remove('playing');
-                    myVideo.pause();
-                    myVideo.currentTime = 0;
+
+                } else {
+                    // Đóng thư & Hiện iPhone (Lần click 2)
+                    envelope.classList.remove('open');
+                    
+                    // Ẩn lá thư
+                    letter.style.opacity = 0;
+                    letter.style.transform = 'translateY(150%) scale(0.5)';
+
+                    // Hiện iPhone sau khi thư đóng
+                    setTimeout(showIphone, 700); 
                 }
             });
 
             // --- BƯỚC 2: Hiện iPhone và Thông báo ---
             function showIphone() {
+                // Đảm bảo không còn lá thư ở trung tâm
+                letter.style.opacity = 0;
+                
                 iphoneContainer.classList.add('visible');
+                
                 setTimeout(() => {
-                    screen.classList.add('active'); 
+                    screen.classList.add('active'); // Bật màn hình
                     setTimeout(() => {
-                        notificationBar.classList.add('show'); 
+                        notificationBar.classList.add('show'); // Hiển thị thông báo
                     }, 500);
                 }, 500);
             }
             
             // --- BƯỚC 3: Mở Messenger ---
             notificationBar.addEventListener('click', function() {
-                alert('Có tin nhắn mới từ A1-K62! Mở Messenger.');
+                // Có thể bỏ dòng alert nếu bạn không muốn
+                // alert('Có tin nhắn mới từ A1-K62! Mở Messenger.');
+                
                 notificationBar.classList.remove('show'); 
                 messengerWindow.classList.add('open');
             });
