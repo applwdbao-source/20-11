@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thư Tình Tương Tác Liền Mạch</title>
+    <title>Thư Tình Tương Tác Liền Mạch (Lật Ngược)</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
@@ -36,17 +36,21 @@
             z-index: 10;
             cursor: pointer;
             filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
-            transition: opacity 0.7s ease-in-out, transform 0.5s ease-in-out; /* Thêm opacity transition */
+            transition: opacity 0.7s ease-in-out, transform 0.5s ease-in-out; 
         }
+        
+        /* 🔥 ĐIỀU CHỈNH LẬT PHONG BÌ: body có Z-index cao hơn flap và heart */
         .body {
             background-color: #d8cce8; 
             width: 100%;
             height: 100%;
             position: absolute;
             bottom: 0;
+            /* Tạo hình dạng phong bì khép kín */
             clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-            z-index: 5;
+            z-index: 25; /* Rất quan trọng: Đặt BODY lên trên flap và heart */
         }
+        
         .flap {
             width: 0;
             height: 0;
@@ -58,7 +62,8 @@
             left: 0;
             transform-origin: bottom;
             transition: transform 0.5s ease-in-out;
-            z-index: 15;
+            z-index: 15; /* Nằm dưới body */
+            /* Do đã lật, nắp này coi như là phần viền đóng của phong bì */
         }
         .heart {
             position: absolute;
@@ -68,8 +73,9 @@
             transform: rotate(-45deg);
             top: 5px;
             left: calc(50% - 15px);
-            z-index: 20;
+            z-index: 20; /* Nằm dưới body */
             transition: opacity 0.3s;
+            opacity: 0; /* Ẩn trái tim khi lật ngược */
         }
         .heart::before, .heart::after {
             content: "";
@@ -82,12 +88,14 @@
         .heart::before { top: -50%; left: 0; }
         .heart::after { left: 50%; top: 0; }
 
-        /* 🔥 HIỆU ỨNG 1: MỞ NẮP BẰNG DI CHUỘT (HOVER) */
+        /* --- KHI MỞ/HOVER: Nắp lật và thân phong bì ẩn xuống --- */
+        /* Khi hover, thân phong bì lùi lại để nắp được nhìn thấy */
+        .envelope:hover .body {
+            z-index: 10; /* Body lùi xuống để flap hiện ra */
+        }
+        /* Nắp vẫn lật khi hover */
         .envelope:hover .flap {
             transform: rotateX(180deg);
-        }
-        .envelope:hover .heart {
-            opacity: 0; 
         }
         
         /* --- LÁ THƯ (LETTER) --- */
@@ -107,7 +115,6 @@
             color: #333;
             text-align: center;
         }
-        /* 🔥 HIỆU ỨNG 2: HIỆN THƯ BẰNG CLASS 'OPEN' (JAVASCRIPT CLICK) */
         .letter.open {
             transform: translateY(-100px) scale(1);
             opacity: 1;
@@ -300,7 +307,7 @@
                     // --- MỞ THƯ ---
                     letter.classList.add('open');
                     
-                    // Ẩn trái tim vĩnh viễn khi thư hiện ra
+                    // Ẩn trái tim (dù đã ẩn trong CSS, thêm JS để đảm bảo)
                     document.querySelector('.heart').style.opacity = '0';
                     
                     // Đảm bảo iPhone ẩn
