@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Love Letter & Message (All-in-One)</title>
+    <title>Thư Tình Tương Tác</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- CÀI ĐẶT CƠ BẢN --- */
+        /* --- CÀI ĐẶT CHUNG --- */
         body {
-            background-color: #f7e8ee; /* Màu hồng nhạt */
+            background-color: #f7e8ee; 
             display: flex;
             justify-content: center;
             align-items: center;
@@ -25,8 +25,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            /* Đảm bảo container nằm trên iPhone */
+            z-index: 100;
         }
-        /* --- THƯ VÀ PHONG BÌ --- */
+        
+        /* --- PHONG BÌ (ENVELOPE) --- */
         .envelope {
             position: absolute;
             width: 100%;
@@ -37,7 +40,7 @@
             transition: transform 0.5s ease-in-out;
         }
         .body {
-            background-color: #d8cce8; /* Màu tím lilac */
+            background-color: #d8cce8; 
             width: 100%;
             height: 100%;
             position: absolute;
@@ -58,6 +61,7 @@
             transition: transform 0.5s ease-in-out;
             z-index: 15;
         }
+        /* Biểu tượng Trái tim (Seal) */
         .heart {
             position: absolute;
             width: 30px;
@@ -67,6 +71,7 @@
             top: 5px;
             left: calc(50% - 15px);
             z-index: 20;
+            transition: opacity 0.3s; /* Thêm transition cho trái tim */
         }
         .heart::before, .heart::after {
             content: "";
@@ -78,6 +83,16 @@
         }
         .heart::before { top: -50%; left: 0; }
         .heart::after { left: 50%; top: 0; }
+
+        /* 🔥 HIỆU ỨNG 1: MỞ NẮP BẰNG DI CHUỘT (HOVER) */
+        .envelope:hover .flap {
+            transform: rotateX(180deg); /* Lật nắp lên */
+        }
+        .envelope:hover .heart {
+            opacity: 0; /* Ẩn trái tim khi mở nắp */
+        }
+        
+        /* --- LÁ THƯ (LETTER) --- */
         .letter {
             position: absolute;
             width: 80%;
@@ -85,46 +100,30 @@
             background-color: white;
             padding: 20px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            /* Trạng thái ban đầu: ẩn */
             transform: translateY(150%) scale(0.5); 
             opacity: 0;
             transition: all 0.7s ease-in-out;
-            z-index: 8;
+            z-index: 8; 
             font-family: 'Dancing Script', cursive; 
             line-height: 1.5;
             color: #333;
             text-align: center;
         }
-        .letter .content {
-            font-size: 18px;
+        /* 🔥 HIỆU ỨNG 2: HIỆN THƯ BẰNG CLASS 'OPEN' (JAVASCRIPT CLICK) */
+        .letter.open {
+            transform: translateY(-100px) scale(1); /* Trượt lên và phóng to */
+            opacity: 1; /* Hiện ra */
         }
-        .letter .signature-name {
-            font-size: 20px;
-            margin-top: 10px;
-            font-weight: 700;
-        }
-        .envelope.open .flap {
-            transform: rotateX(180deg); 
-        }
-        .envelope.open + .letter {
-            transform: translateY(-100px) scale(1); 
-            opacity: 1;
-        }
-        /* --- HIỆU ỨNG TRÁI TIM BAY (Đã sửa kích thước) --- */
+        
+        /* --- CÁC PHẦN CÒN LẠI (IPHONE/HEARTS) --- */
+
+        /* Hiệu ứng Trái tim Bay (Tăng kích thước) */
         .floating-hearts {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;
         }
         .floating-hearts span {
-            position: absolute;
-            color: #f095b3; /* Màu hồng */
-            /* TĂNG KÍCH THƯỚC VÀ ĐỘ RÕ */
-            font-size: 35px; /* Tăng từ 20px lên 35px */
-            opacity: 0.5; /* Bắt đầu rõ hơn (tăng từ 0 lên 0.5) */
-            animation: floatUp 15s infinite ease-in;
+            position: absolute; color: #f095b3; font-size: 35px; opacity: 0.5; animation: floatUp 15s infinite ease-in;
         }
         .floating-hearts span:nth-child(1) { left: 10%; animation-delay: 0s; }
         .floating-hearts span:nth-child(2) { left: 30%; animation-delay: 3s; color: #d8cce8; } 
@@ -132,194 +131,89 @@
         .floating-hearts span:nth-child(4) { left: 70%; animation-delay: 9s; color: #d8cce8; }
         .floating-hearts span:nth-child(5) { left: 90%; animation-delay: 12s; }
         @keyframes floatUp {
-            0% { transform: translateY(100vh) scale(0.5); opacity: 0.5; } /* Điều chỉnh scale ban đầu */
-            50% { opacity: 1; } /* Rõ nhất giữa chừng */
-            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } /* Tăng scale cuối */
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0.5; } 
+            50% { opacity: 1; } 
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } 
         }
-        /* --- IPHONE STYLING --- */
+
+        /* iPhone Styling (Không đổi) */
         .iphone-container {
-            position: absolute;
-            opacity: 0;
-            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
-            transform: translateY(100px);
-            z-index: 50; 
+            position: absolute; opacity: 0; transition: opacity 1s ease-in-out, transform 1s ease-in-out; transform: translateY(100px); z-index: 50; 
         }
         .iphone-container.visible {
-            opacity: 1;
-            transform: translateY(0);
+            opacity: 1; transform: translateY(0);
         }
         .iphone {
-            width: 250px;
-            height: 450px;
-            background-color: #333;
-            border-radius: 35px;
-            padding: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            position: relative;
-            border-top: 8px solid #333; 
+            width: 250px; height: 450px; background-color: #333; border-radius: 35px; padding: 15px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); position: relative; border-top: 8px solid #333; 
         }
         .iphone::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 10px;
-            background-color: #222;
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
+            content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 60px; height: 10px; background-color: #222; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;
         }
         .screen {
-            background-color: black; 
-            width: 100%;
-            height: 100%;
-            border-radius: 15px;
-            position: relative;
-            overflow: hidden;
-            transition: background-color 0.5s;
+            background-color: black; width: 100%; height: 100%; border-radius: 15px; position: relative; overflow: hidden; transition: background-color 0.5s;
         }
         .screen.active {
             background-color: white; 
         }
-        /* --- THÔNG BÁO MESSENGER --- */
+        /* Thông báo Messenger */
         .notification-bar {
-            position: absolute;
-            top: -100px; 
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            padding: 8px 10px;
-            background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            z-index: 60;
-            transition: top 0.3s ease-out, opacity 0.3s;
-            opacity: 0; 
+            position: absolute; top: -100px; left: 50%; transform: translateX(-50%); width: 90%; padding: 8px 10px; background-color: rgba(255, 255, 255, 0.95); border-radius: 12px; display: flex; align-items: center; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); cursor: pointer; z-index: 60; transition: top 0.3s ease-out, opacity 0.3s; opacity: 0; 
         }
         .notification-bar.show {
-            top: 20px;
-            opacity: 1;
+            top: 20px; opacity: 1;
         }
         .app-icon {
-            width: 30px;
-            height: 30px;
-            margin-right: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            width: 30px; height: 30px; margin-right: 10px; display: flex; justify-content: center; align-items: center;
         }
         .messenger-icon {
-            width: 25px;
-            height: 25px;
-            background: radial-gradient(circle at top right, #38c8ff, #0084ff);
-            border-radius: 50%;
-            position: relative;
+            width: 25px; height: 25px; background: radial-gradient(circle at top right, #38c8ff, #0084ff); border-radius: 50%; position: relative;
         }
         .notification-content {
-            color: #333;
-            text-align: left;
-            flex-grow: 1;
+            color: #333; text-align: left; flex-grow: 1;
         }
         .sender-name {
-            font-weight: bold;
-            margin: 0;
-            font-size: 14px;
+            font-weight: bold; margin: 0; font-size: 14px;
         }
         .message-preview {
-            margin: 0;
-            font-size: 12px;
-            color: #555;
+            margin: 0; font-size: 12px; color: #555;
         }
-        /* --- CỬA SỔ MESSENGER --- */
+        /* Cửa sổ Messenger */
         .messenger-window {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: white;
-            transform: translateY(100%); 
-            transition: transform 0.4s ease-out;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: white; transform: translateY(100%); transition: transform 0.4s ease-out;
         }
         .messenger-window.open {
             transform: translateY(0); 
         }
         .chat-header {
-            padding: 10px;
-            background-color: #0084ff;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
+            padding: 10px; background-color: #0084ff; color: white; font-size: 16px; font-weight: bold; display: flex; align-items: center;
         }
         .back-btn {
-            margin-right: 15px;
-            cursor: pointer;
-            font-size: 20px;
+            margin-right: 15px; cursor: pointer; font-size: 20px;
         }
         .chat-body {
-            padding: 15px;
-            height: calc(100% - 45px); 
-            overflow-y: auto;
+            padding: 15px; height: calc(100% - 45px); overflow-y: auto;
         }
         .video-message {
-            background-color: #0084ff;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 15px 15px 15px 0;
-            display: inline-flex;
-            align-items: center;
-            max-width: 70%;
-            margin-top: 10px;
-            cursor: pointer;
-            text-align: center;
+            background-color: #0084ff; color: white; padding: 10px 15px; border-radius: 15px 15px 15px 0; display: inline-flex; align-items: center; max-width: 70%; margin-top: 10px; cursor: pointer; text-align: center;
         }
         .video-message p {
-            margin: 0;
-            font-size: 14px;
+            margin: 0; font-size: 14px;
         }
         .play-icon {
-            margin-left: 10px;
-            font-size: 16px;
+            margin-left: 10px; font-size: 16px;
         }
-        /* --- VIDEO PLAYER OVERLAY --- */
+        /* Video Player Overlay */
         .video-player {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            display: none; 
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.9); display: none; justify-content: center; align-items: center; z-index: 100;
         }
         .video-player.playing {
             display: flex;
         }
         #myVideo {
-            width: 90%;
-            max-height: 90%;
-            border-radius: 10px;
+            width: 90%; max-height: 90%; border-radius: 10px;
         }
         .close-video-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: 2px solid white;
-            color: white;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            cursor: pointer;
-            font-size: 16px;
+            position: absolute; top: 10px; right: 10px; background: none; border: 2px solid white; color: white; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 16px;
         }
     </style>
 </head>
@@ -397,30 +291,34 @@
             const myVideo = document.getElementById('myVideo');
             const closeVideoBtn = document.getElementById('closeVideoBtn');
             const backBtn = document.querySelector('.back-btn');
+            
+            // Theo yêu cầu mới, chúng ta dùng class 'open' cho letter, 
+            // không còn dùng cho envelope nữa.
 
-            let isLetterOpen = false;
-
-            // --- BƯỚC 1: Mở/Đóng Thư ---
+            // --- BƯỚC 1: Mở/Đóng Thư (Sử dụng Click cho Letter) ---
             envelope.addEventListener('click', function() {
-                if (envelope.classList.contains('open')) {
+                if (letter.classList.contains('open')) {
                     // Đóng thư: Bắt đầu hiệu ứng iPhone
-                    envelope.classList.remove('open');
-                    isLetterOpen = true; 
+                    letter.classList.remove('open');
                     
-                    // Ẩn thư
-                    letter.style.opacity = 0;
-                    letter.style.transform = 'translateY(150%) scale(0.5)';
+                    // Thêm lại class 'open' cho envelope để đóng nắp 
+                    // (dù CSS hover đã lo việc mở, ta cần click để reset animation)
+                    
+                    // Ẩn nắp và trái tim sau khi đóng (dùng JS để override hover tạm thời)
+                    const flap = document.querySelector('.flap');
+                    const heart = document.querySelector('.heart');
+                    flap.style.transform = 'rotateX(0deg)';
+                    heart.style.opacity = '1';
 
-                    // Hiển thị iPhone sau khi đóng thư
+                    // Hiển thị iPhone
                     setTimeout(showIphone, 700); 
 
                 } else {
-                    // Mở thư
-                    envelope.classList.add('open');
+                    // Mở thư: Thêm class 'open' vào letter
+                    letter.classList.add('open');
                     
-                    // Hiện thư
-                    letter.style.opacity = 1;
-                    letter.style.transform = 'translateY(-100px) scale(1)';
+                    // Ẩn trái tim vĩnh viễn khi thư hiện ra
+                    document.querySelector('.heart').style.opacity = '0';
                     
                     // Đảm bảo iPhone ẩn khi đọc thư
                     iphoneContainer.classList.remove('visible');
@@ -450,17 +348,13 @@
             
             // --- BƯỚC 3: Mở Messenger ---
             notificationBar.addEventListener('click', function() {
-                // Nhắc nhở người dùng
                 alert('Có tin nhắn mới từ A1-K62! Mở Messenger.');
-                
-                // Mở cửa sổ Messenger và ẩn thông báo
                 notificationBar.classList.remove('show'); 
                 messengerWindow.classList.add('open');
             });
 
             // --- BƯỚC 4: Phát video ---
             videoMessage.addEventListener('click', function() {
-                // Hiển thị khung video và phát
                 videoPlayer.classList.add('playing');
                 myVideo.play();
             });
