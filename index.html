@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Love Letter & Message</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+        <div class="envelope" id="envelope">
+            <div class="flap"></div>
+            <div class="body"></div>
+            <div class="heart"></div>
+        </div>
+
+        <div class="letter" id="letter">
+            <p class="greeting">Kính gửi thầy, cô!</p>
+            <p class="content">Thiên thần của tôi, em giúp anh nhận ra ánh mắt nhìn một gam màu... dù ấm áp nhưng cũng đầy câm lặng. Em không chỉ là người yêu, mà còn là người bạn. Là chiếc bến bình yên mỗi khi anh mệt mỏi. Cứ những lúc anh chưa đủ dũng khí để chia sẻ hết nỗi lòng, những tin nhắn em hãy lắng nghe, anh dành cho em là chất lỏng mang ngày càng lớn theo thời gian. Một khoảnh khắc bình dị, em đã thắp sáng tim anh. Em đang trông đợi điều tốt đẹp nhất mỗi anh. Cảm ơn em của anh, yêu anh những giây phút em im lặng, mà hãnh diện khi luôn được em nhìn nhận trong cuộc đời anh – như những nhành cây không dễ thay đổi. Cảm ơn em đã đến, mà mang em ở lại, cùng anh viết nên những ngày mới.</p>
+            <p class="signature">Mãi yêu em!</p>
+            <p class="signature-name">A1-K62</p>
+        </div>
+    </div>
+
+    <div class="floating-hearts">
+        <span>&#10084;</span>
+        <span>&#10084;</span>
+        <span>&#10084;</span>
+        <span>&#10084;</span>
+        <span>&#10084;</span>
+    </div>
+
+    <div class="iphone-container">
+        <div class="iphone">
+            <div class="screen">
+                <div class="notification-bar" id="notificationBar">
+                    <div class="app-icon">
+                        <div class="messenger-icon"></div>
+                    </div>
+                    <div class="notification-content">
+                        <p class="sender-name">A1-K62</p>
+                        <p class="message-preview">Đã gửi một video...</p>
+                    </div>
+                </div>
+
+                <div class="messenger-window" id="messengerWindow">
+                    <div class="chat-header">
+                        <span class="back-btn">&lt;</span>
+                        <span class="header-name">A1-K62</span>
+                    </div>
+                    <div class="chat-body">
+                        <div class="video-message" id="videoMessage">
+                            <p>Nhấp để xem video</p>
+                            <span class="play-icon">&#9654;</span>
+                        </div>
+                    </div>
+                    <div class="video-player" id="videoPlayer">
+                        <video id="myVideo" controls>
+                            <source src="video.mp4" type="video/mp4"> 
+                            Trình duyệt của bạn không hỗ trợ thẻ video.
+                        </video>
+                        <button class="close-video-btn" id="closeVideoBtn">X</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
