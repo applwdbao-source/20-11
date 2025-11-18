@@ -3,50 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thư Tình Tương Tác - Đã Sửa Lỗi</title>
+    <title>Thư Chúc Mừng 20/11 - Tương Tác</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* --- CÀI ĐẶT CƠ BẢN --- */
         body{background-color:#f7e8ee;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;overflow:hidden;font-family:Arial,sans-serif}
         .container{position:relative;width:300px;height:200px;display:flex;justify-content:center;align-items:center}
         
-        /* --- THƯ VÀ PHONG BÌ (Đã tăng Z-Index) --- */
+        /* --- THƯ VÀ PHONG BÌ (Điều chỉnh cho Hover) --- */
         .envelope{
             position:absolute;width:100%;height:100%;
-            z-index: 100; /* TĂNG ĐỘ ƯU TIÊN TUYỆT ĐỐI */
+            z-index: 100; 
             cursor:pointer;filter:drop-shadow(0 4px 8px rgba(0,0,0,.1));transition:transform .5s ease-in-out
         }
-        .body{background-color:#d8cce8;width:100%;height:100%;position:absolute;bottom:0;clip-path:polygon(0 0,100% 0,100% 100%,0 100%);z-index:95} /* Giảm z-index để phong bì luôn trên cùng */
-        .flap{width:0;height:0;border-style:solid;border-width:150px 150px 0 150px;border-color:#e4d8f1 transparent transparent transparent;position:absolute;top:-100px;left:0;transform-origin:bottom;transition:transform .5s ease-in-out;z-index:105} /* Flap phải cao hơn envelope body */
+        .body{background-color:#d8cce8;width:100%;height:100%;position:absolute;bottom:0;clip-path:polygon(0 0,100% 0,100% 100%,0 100%);z-index:95} 
+        .flap{width:0;height:0;border-style:solid;border-width:150px 150px 0 150px;border-color:#e4d8f1 transparent transparent transparent;position:absolute;top:-100px;left:0;transform-origin:bottom;transition:transform .5s ease-in-out;z-index:105} 
         .heart{position:absolute;width:30px;height:30px;background-color:#8c5d9a;transform:rotate(-45deg);top:5px;left:calc(50% - 15px);z-index:110}
         
+        /* HIỆU ỨNG RÊ CHUỘT (HOVER) */
+        .envelope:hover .flap {
+            transform: rotateX(180deg);
+        }
+        .envelope:hover + .letter {
+            transform: translateY(-100px) scale(1);
+            opacity: 1;
+        }
+
         /* Lá thư */
         .letter{
             position:absolute;width:80%;max-width:400px;background-color:#fff;padding:20px;box-shadow:0 4px 15px rgba(0,0,0,.2);
-            transform:translateY(150%) scale(.5);opacity:0; /* Trạng thái ban đầu */
-            transition:all .7s ease-in-out;z-index:50; /* Z-index thấp hơn phong bì */
-            font-family:'Dancing Script',cursive;line-height:1.5;color:#333;text-align:center
+            transform:translateY(150%) scale(.5);opacity:0; 
+            transition:all .7s ease-in-out;z-index:50;
+            font-family:'Dancing Script',cursive;line-height:1.5;color:#333;text-align:center;
+            cursor: pointer; /* Lá thư có thể click để đóng */
         }
         .letter .content{font-size:18px}.letter .signature-name{font-size:20px;margin-top:10px;font-weight:700}
-        .envelope.open .flap{transform:rotateX(180deg)}
-        .envelope.open + .letter{transform:translateY(-100px) scale(1);opacity:1;}
         
         /* --- HIỆU ỨNG TRÁI TIM BAY --- */
-        .floating-hearts{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none; z-index: 1;} /* Đảm bảo z-index thấp */
+        .floating-hearts{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none; z-index: 1;}
         .floating-hearts span{position:absolute;color:#f095b3;font-size:35px;opacity:.5;animation:floatUp 15s infinite ease-in}
         .floating-hearts span:nth-child(2){left:30%;animation-delay:3s;color:#d8cce8;}
         .floating-hearts span:nth-child(4){left:70%;animation-delay:9s;color:#d8cce8;}
         @keyframes floatUp{0%{transform:translateY(100vh) scale(.5);opacity:.5}50%{opacity:1}100%{transform:translateY(-10vh) scale(1.5);opacity:0}}
         
-        /* --- IPHONE STYLING --- */
-        .iphone-container{position:absolute;opacity:0;transition:opacity 1s ease-in-out,transform 1s ease-in-out;transform:translateY(100px);z-index:200} /* Rất cao để hiện sau cùng */
+        /* --- IPHONE STYLING (Không đổi) --- */
+        .iphone-container{position:absolute;opacity:0;transition:opacity 1s ease-in-out,transform 1s ease-in-out;transform:translateY(100px);z-index:200}
         .iphone-container.visible{opacity:1;transform:translateY(0)}
         .iphone{width:250px;height:450px;background-color:#333;border-radius:35px;padding:15px;box-shadow:0 10px 30px rgba(0,0,0,.4);position:relative;border-top:8px solid #333}
         .iphone::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:60px;height:10px;background-color:#222;border-bottom-left-radius:10px;border-bottom-right-radius:10px}
         .screen{background-color:#000;width:100%;height:100%;border-radius:15px;position:relative;overflow:hidden;transition:background-color .5s}
         .screen.active{background-color:#fff}
         
-        /* --- THÔNG BÁO MESSENGER --- */
         .notification-bar{position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:90%;padding:8px 10px;background-color:rgba(255,255,255,.95);border-radius:12px;display:flex;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,.2);cursor:pointer;z-index:250;transition:top .3s ease-out,opacity .3s;opacity:0}
         .notification-bar.show{top:20px;opacity:1}
         .app-icon{width:30px;height:30px;margin-right:10px;display:flex;justify-content:center;align-items:center}
@@ -55,7 +62,6 @@
         .sender-name{font-weight:700;margin:0;font-size:14px}
         .message-preview{margin:0;font-size:12px;color:#555}
         
-        /* --- CỬA SỔ MESSENGER --- */
         .messenger-window{position:absolute;top:0;left:0;width:100%;height:100%;background-color:#fff;transform:translateY(100%);transition:transform .4s ease-out; z-index: 280;}
         .messenger-window.open{transform:translateY(0)}
         .chat-header{padding:10px;background-color:#0084ff;color:#fff;font-size:16px;font-weight:700;display:flex;align-items:center}
@@ -65,7 +71,6 @@
         .video-message p{margin:0;font-size:14px}
         .play-icon{margin-left:10px;font-size:16px}
         
-        /* --- VIDEO PLAYER OVERLAY --- */
         .video-player{position:absolute;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.9);display:none;justify-content:center;align-items:center;z-index:300}
         .video-player.playing{display:flex}
         #myVideo{
@@ -87,10 +92,10 @@
         </div>
 
         <div class="letter" id="letter">
-            <p class="greeting">Dear My Dear!</p>
-            <p class="content">Thiên thần của tôi, em giúp anh nhận ra ánh mắt nhìn một gam màu... dù ấm áp nhưng cũng đầy câm lặng. Em không chỉ là người yêu, mà còn là người bạn. Là chiếc bến bình yên mỗi khi anh mệt mỏi. Cứ những lúc anh chưa đủ dũng khí để chia sẻ hết nỗi lòng, những tin nhắn em hãy lắng nghe, anh dành cho em là chất lỏng mang ngày càng lớn theo thời gian. Một khoảnh khắc bình dị, em đã thắp sáng tim anh. Em đang trông đợi điều tốt đẹp nhất mỗi anh. Cảm ơn em của anh, yêu anh những giây phút em im lặng, mà hãnh diện khi luôn được em nhìn nhận trong cuộc đời anh – như những nhành cây không dễ thay đổi. Cảm ơn em đã đến, mà mang em ở lại, cùng anh viết nên những ngày mới.</p>
-            <p class="signature">Mãi yêu em!</p>
-            <p class="signature-name">Kỳ Ân</p>
+            <p class="greeting">Kính gửi các Thầy Cô giáo!</p>
+            <p class="content">Nhân ngày **Nhà giáo Việt Nam 20/11**, thay mặt cho toàn thể học sinh, chúng em xin gửi lời chúc sức khỏe, niềm vui và sự bình an đến tất cả các thầy cô. Chúng em trân trọng sự **kiên nhẫn, tính thực tế** trong giảng dạy và những **lời phê bình nghiêm khắc nhưng xây dựng** của thầy cô, điều đã giúp chúng em nhận ra cần phải nỗ lực như thế nào. Xin cảm ơn Thầy Cô đã cung cấp cho chúng em kiến thức và định hướng rõ ràng cho chặng đường sắp tới. Chúng em hứa sẽ cố gắng hết sức để không phụ lòng mong mỏi. Kính chúc Thầy Cô có một ngày 20/11 thật ý nghĩa!</p>
+            <p class="signature">Kính chúc!</p>
+            <p class="signature-name">Tập thể học sinh</p>
         </div>
     </div>
 
@@ -157,33 +162,28 @@
                 myVideo.pause();
                 myVideo.currentTime = 0;
             }
-
-            // --- BƯỚC 1: Mở/Đóng Thư (Đã sửa lỗi) ---
-            envelope.addEventListener('click', function(e) {
-                // Ngăn chặn sự kiện click lan truyền, đôi khi cần thiết trên một số môi trường
-                e.stopPropagation(); 
+            
+            // Khởi tạo trạng thái để đồng bộ CSS hover
+            letter.style.opacity = 0;
+            letter.style.transform = 'translateY(150%) scale(0.5)';
+            resetIphoneState();
+            
+            // --- BƯỚC 1: Click vào lá thư để đóng và chuyển sang iPhone ---
+            letter.addEventListener('click', function(e) {
+                e.stopPropagation(); // Đảm bảo chỉ click vào thư mới kích hoạt
                 
-                if (!envelope.classList.contains('open')) {
-                    // Mở thư (Click 1): 
-                    // 1. Đảm bảo iPhone ẩn
-                    resetIphoneState(); 
-                    // 2. Mở phong bì và hiện thư
-                    envelope.classList.add('open');
-                    letter.style.opacity = 1;
-                    letter.style.transform = 'translateY(-100px) scale(1)';
+                // Ẩn lá thư
+                letter.style.opacity = 0;
+                letter.style.transform = 'translateY(150%) scale(0.5)';
 
-                } else {
-                    // Đóng thư & Hiện iPhone (Click 2):
-                    // 1. Đóng phong bì
-                    envelope.classList.remove('open');
-                    
-                    // 2. Ẩn lá thư
-                    letter.style.opacity = 0;
-                    letter.style.transform = 'translateY(150%) scale(0.5)';
+                // Hiển thị lại phong bì đang mở, sau đó đóng nó lại
+                envelope.classList.add('open');
+                setTimeout(() => {
+                    envelope.classList.remove('open'); // Giả lập đóng nắp
+                }, 100); 
 
-                    // 3. Hiện iPhone sau khi thư đóng mượt mà
-                    setTimeout(showIphone, 700); 
-                }
+                // Hiện iPhone sau khi thư đóng
+                setTimeout(showIphone, 700); 
             });
 
             // --- BƯỚC 2: Hiện iPhone và Thông báo ---
@@ -198,7 +198,7 @@
                 }, 500);
             }
             
-            // --- BƯỚC 3 & 4: Logic iPhone/Messenger/Video (Không thay đổi) ---
+            // --- BƯỚC 3 & 4: Logic iPhone/Messenger/Video (Giữ nguyên) ---
             notificationBar.addEventListener('click', function() {
                 notificationBar.classList.remove('show'); 
                 messengerWindow.classList.add('open');
