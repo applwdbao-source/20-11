@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thư Tình Tương Tác</title>
+    <title>Thư Tình Tương Tác (Final)</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* --- CÀI ĐẶT CƠ BẢN --- */
         body{background-color:#f7e8ee;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;overflow:hidden;font-family:Arial,sans-serif}
         .container{position:relative;width:300px;height:200px;display:flex;justify-content:center;align-items:center}
+        /* --- THƯ VÀ PHONG BÌ --- */
         .envelope{position:absolute;width:100%;height:100%;z-index:10;cursor:pointer;filter:drop-shadow(0 4px 8px rgba(0,0,0,.1));transition:transform .5s ease-in-out}
         .body{background-color:#d8cce8;width:100%;height:100%;position:absolute;bottom:0;clip-path:polygon(0 0,100% 0,100% 100%,0 100%);z-index:5}
         .flap{width:0;height:0;border-style:solid;border-width:150px 150px 0 150px;border-color:#e4d8f1 transparent transparent transparent;position:absolute;top:-100px;left:0;transform-origin:bottom;transition:transform .5s ease-in-out;z-index:15}
@@ -17,17 +19,21 @@
         .letter{position:absolute;width:80%;max-width:400px;background-color:#fff;padding:20px;box-shadow:0 4px 15px rgba(0,0,0,.2);transform:translateY(150%) scale(.5);opacity:0;transition:all .7s ease-in-out;z-index:8;font-family:'Dancing Script',cursive;line-height:1.5;color:#333;text-align:center}
         .letter .content{font-size:18px}.letter .signature-name{font-size:20px;margin-top:10px;font-weight:700}
         .envelope.open .flap{transform:rotateX(180deg)}
+        .envelope.open + .letter{transform:translateY(-100px) scale(1);opacity:1;} /* Vị trí lá thư khi mở */
+        /* --- HIỆU ỨNG TRÁI TIM BAY --- */
         .floating-hearts{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none}
         .floating-hearts span{position:absolute;color:#f095b3;font-size:35px;opacity:.5;animation:floatUp 15s infinite ease-in}
-        .floating-hearts span:nth-child(2){color:#d8cce8}
-        .floating-hearts span:nth-child(4){color:#d8cce8}
+        .floating-hearts span:nth-child(2){left:30%;animation-delay:3s;color:#d8cce8;}
+        .floating-hearts span:nth-child(4){left:70%;animation-delay:9s;color:#d8cce8;}
         @keyframes floatUp{0%{transform:translateY(100vh) scale(.5);opacity:.5}50%{opacity:1}100%{transform:translateY(-10vh) scale(1.5);opacity:0}}
+        /* --- IPHONE STYLING --- */
         .iphone-container{position:absolute;opacity:0;transition:opacity 1s ease-in-out,transform 1s ease-in-out;transform:translateY(100px);z-index:50}
         .iphone-container.visible{opacity:1;transform:translateY(0)}
         .iphone{width:250px;height:450px;background-color:#333;border-radius:35px;padding:15px;box-shadow:0 10px 30px rgba(0,0,0,.4);position:relative;border-top:8px solid #333}
         .iphone::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:60px;height:10px;background-color:#222;border-bottom-left-radius:10px;border-bottom-right-radius:10px}
         .screen{background-color:#000;width:100%;height:100%;border-radius:15px;position:relative;overflow:hidden;transition:background-color .5s}
         .screen.active{background-color:#fff}
+        /* --- THÔNG BÁO MESSENGER --- */
         .notification-bar{position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:90%;padding:8px 10px;background-color:rgba(255,255,255,.95);border-radius:12px;display:flex;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,.2);cursor:pointer;z-index:60;transition:top .3s ease-out,opacity .3s;opacity:0}
         .notification-bar.show{top:20px;opacity:1}
         .app-icon{width:30px;height:30px;margin-right:10px;display:flex;justify-content:center;align-items:center}
@@ -35,6 +41,7 @@
         .notification-content{color:#333;text-align:left;flex-grow:1}
         .sender-name{font-weight:700;margin:0;font-size:14px}
         .message-preview{margin:0;font-size:12px;color:#555}
+        /* --- CỬA SỔ MESSENGER --- */
         .messenger-window{position:absolute;top:0;left:0;width:100%;height:100%;background-color:#fff;transform:translateY(100%);transition:transform .4s ease-out}
         .messenger-window.open{transform:translateY(0)}
         .chat-header{padding:10px;background-color:#0084ff;color:#fff;font-size:16px;font-weight:700;display:flex;align-items:center}
@@ -43,6 +50,7 @@
         .video-message{background-color:#0084ff;color:#fff;padding:10px 15px;border-radius:15px 15px 15px 0;display:inline-flex;align-items:center;max-width:70%;margin-top:10px;cursor:pointer;text-align:center}
         .video-message p{margin:0;font-size:14px}
         .play-icon{margin-left:10px;font-size:16px}
+        /* --- VIDEO PLAYER OVERLAY --- */
         .video-player{position:absolute;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,.9);display:none;justify-content:center;align-items:center;z-index:100}
         .video-player.playing{display:flex}
         #myVideo{width:90%;max-height:90%;border-radius:10px}
@@ -118,6 +126,7 @@
             const closeVideoBtn = document.getElementById('closeVideoBtn');
             const backBtn = document.querySelector('.back-btn');
 
+            // --- BƯỚC 1: Mở/Đóng Thư ---
             envelope.addEventListener('click', function() {
                 if (envelope.classList.contains('open')) {
                     // Đóng thư & Hiện iPhone
@@ -130,7 +139,7 @@
                     envelope.classList.add('open');
                     letter.style.opacity = 1;
                     letter.style.transform = 'translateY(-100px) scale(1)';
-                    // Ẩn iPhone
+                    // Đảm bảo iPhone ẩn khi đọc thư
                     iphoneContainer.classList.remove('visible');
                     screen.classList.remove('active');
                     notificationBar.classList.remove('show');
@@ -141,6 +150,7 @@
                 }
             });
 
+            // --- BƯỚC 2: Hiện iPhone và Thông báo ---
             function showIphone() {
                 iphoneContainer.classList.add('visible');
                 setTimeout(() => {
@@ -151,23 +161,27 @@
                 }, 500);
             }
             
+            // --- BƯỚC 3: Mở Messenger ---
             notificationBar.addEventListener('click', function() {
                 alert('Có tin nhắn mới từ A1-K62! Mở Messenger.');
                 notificationBar.classList.remove('show'); 
                 messengerWindow.classList.add('open');
             });
 
+            // --- BƯỚC 4: Phát video ---
             videoMessage.addEventListener('click', function() {
                 videoPlayer.classList.add('playing');
                 myVideo.play();
             });
 
+            // --- Đóng video ---
             closeVideoBtn.addEventListener('click', function() {
                 myVideo.pause();
                 myVideo.currentTime = 0;
                 videoPlayer.classList.remove('playing');
             });
             
+            // --- Nút Quay lại Messenger ---
             backBtn.addEventListener('click', function() {
                 messengerWindow.classList.remove('open');
             });
